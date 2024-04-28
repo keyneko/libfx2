@@ -1,0 +1,15 @@
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install g++
+sudo apt-get install flex
+sudo apt-get install libboost-graph-dev
+sudo apt-get install bison
+sudo apt-get install gputils
+
+wget https://cfhcable.dl.sourceforge.net/project/sdcc/sdcc/4.2.0/sdcc-src-4.2.0.tar.bz2
+tar -xjf sdcc-src-4.2.0.tar.bz2
+cd sdcc-src-4.2.0
+
+./configure
+sudo make
+sudo make install

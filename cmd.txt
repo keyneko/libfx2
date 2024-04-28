@@ -1,0 +1,41 @@
+# 安装依赖
+$ sudo apt-get install make sdcc python3 python3-libusb1
+	# 如果失败，需要安装相应工具包
+	$ sudo apt update
+	$ sudo apt install python3-pip -y
+	$ python3 -m pip --version
+	$ python3 -m pip install --user setuptools
+
+# 编译固件
+$ make -C firmware
+
+# 安装python工具
+$ python3 software/setup.py develop --user
+$ python3 -m pip install fx2
+
+# 查看usb设备
+$ lsusb
+
+# 烧录固件
+$ sudo python3 -m fx2.fx2tool -B -d 04b4:8613 program -f firmware/boot-cypress/boot-cypress.ihex
+$ sudo python3 -m fx2.fx2tool -B -d 04b4:8613 program -f firmware/boot-uf2/boot-uf2.ihex
+$ sudo python3 -m fx2.fx2tool -B -d 04b4:8613 program -f firmware/boot-dfu/boot-dfu.ihex
+
+# 烧录应用
+$ sudo python3 -m fx2.fx2tool -B -d 04b4:8613 program -f examples/blinky/blinky.ihex 
+
+# 烧录应用（Cypress bootloader firmware）
+$ sudo make -C examples/blinky load
+
+# 烧录应用（其他bootloader firmware）
+$ sudo make -C examples/boot-dfu-spiflash load
+$ sudo make -C examples/boot-uf2-dfu load
+$ sudo make -C firmware/boot-uf2 load
+
+
+# 其他命令
+sudo python3 -m fx2.fx2tool -B -d 04b4:8613 read_eeprom -W 1 0 256
+sudo python3 -m fx2.fx2tool -B -d 04b4:8613 write_eeprom -W 1 -a 0 -f saleae.hex
+
+sudo python3 -m fx2.fx2tool -d 04b4:8613 dump
+sudo python3 -m fx2.fx2tool -d 04b4:8613 reenumerate
